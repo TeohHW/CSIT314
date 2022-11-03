@@ -15,7 +15,6 @@
 		$nameErrorMsg = "";
 		$surnameErrorMsg = "";
 		$emailErrorMsg = "";
-		$phoneErrorMsg = "";
 		$pwErrorMsg = "";
 		$confirmPwErrorMsg = "";
 		$userTypeErrorMsg = "";
@@ -32,11 +31,10 @@
         $registerArr = array(
             'name' => '',
             'surname' => '',
-            'phone' => '',
             'email' => '',
+			'type' => '',
             'password' => '',
             'confirm_password' => '',
-            'type' => '',
         );
         
 		$valid = array();
@@ -83,22 +81,6 @@
 				$registerArr['surname'] = format($registerArr['surname']);
                 $valid[] = TRUE;
             }
-
-            if (empty($registerArr['phone'])) 
-			{
-				$phoneErrorMsg = "Please enter your contact number!";
-                $valid[] = FALSE;
-            } 
-			else if (!preg_match($validatePhone, format($registerArr['phone']))) 
-			{
-				$phoneErrorMsg = "Invalid contact number!";
-                $valid[] = FALSE;
-            } 
-			else {
-                $registerArr['phone'] = format($registerArr['phone']);
-                $valid[] = TRUE;
-            }
-
             if (empty($registerArr['email']))
 				{
 				$emailErrorMsg = "Please enter your email!";
@@ -120,7 +102,14 @@
 			else {
                 $valid[] = TRUE;
             }
-			
+			 if (empty($registerArr['type'])) 
+			{
+				$userTypeErrorMsg = "Please select a user type!";
+                $valid[] = FALSE;
+            } 
+			else {
+                $valid[] = TRUE;
+            }
             if (empty($registerArr['confirm_password'])) 
 			{
 				$confirm_err = "Please confirm password!";
@@ -135,26 +124,17 @@
                 $valid[] = TRUE;
             }
 
-            if (empty($registerArr['type'])) 
-			{
-				$userTypeErrorMsg = "Please select a user type!";
-                $valid[] = FALSE;
-            } 
-			else {
-                $valid[] = TRUE;
-            }
-
             if (!in_array(FALSE, $valid)) 
 			{
                 $checkUser = new Users();
                 if (!$checkUser->getMail($registerArr['email'])) 
 				{
-                    $userObj = new Users($registerArr['name'], $registerArr['surname'], $registerArr['phone'], $registerArr['email'], $registerArr['type'], $registerArr['password']);
+                    $userObj = new Users($registerArr['name'], $registerArr['surname'], $registerArr['email'], $registerArr['type'], $registerArr['password']);
                     $success = $userObj->addUser($userObj);
-
+		
                     if ($success) {
-                        echo '<script>alert("Account registered successfully")</script>';
-						echo '<script>window.location.href = "login.php";</script>';
+                       echo '<script>alert("Account registered successfully")</script>';
+					   echo '<script>window.location.href = "index.php";</script>';
                     } 
 					else {
                         echo '<script>alert("Account registration failed")</script>';
@@ -164,11 +144,11 @@
                     $registerArr = array(
                         'name' => '',
                         'surname' => '',
-                        'phone' => '',
                         'email' => '',
+						'type' => '',
                         'password' => '',
                         'confirm_password' => '',
-                        'type' => '',
+                        
                     );
                 } 
 				else {
@@ -193,11 +173,6 @@
                 <span class="invalid-feedback"><?php echo $surnameErrorMsg; ?></span>
             </div>
 			<div class="form-group">
-                <label>Contact Number</label>
-                <input type="text" name="phone" class="form-control <?php echo (!empty($phoneErrorMsg)) ? 'is-invalid' : ''; ?>" value="<?php echo $registerArr['phone']; ?>">
-                <span class="invalid-feedback"><?php echo $phoneErrorMsg; ?></span>
-            </div>
-			<div class="form-group">
                 <label>Email</label>
                 <input type="text" name="email" class="form-control <?php echo (!empty($emailErrorMsg)) ? 'is-invalid' : ''; ?>" value="<?php echo $registerArr['email']; ?>">
                 <span class="invalid-feedback"><?php echo $emailErrorMsg; ?></span>
@@ -209,7 +184,7 @@
             </div>
             <div class="form-group">
                 <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirmPwErrorMsg)) ? 'is-invalid' : ''; ?>" value="<?php echo $registerArr['confirm_password'];; ?>">
+                <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirmPwErrorMsg)) ? 'is-invalid' : ''; ?>" value="<?php echo $registerArr['confirm_password']; ?>">
                 <span class="invalid-feedback"><?php echo $confirmPwErrorMsg; ?></span>
             </div>
 			
@@ -220,19 +195,19 @@
 					<option value="Author" <?php
 					if ($registerArr['type'] == "Author") 
 					{
-						echo ' selected="selected"';
+						echo "selected='selected'";
 					}
 					?>>Author</option>
 					<option value="Reviewer" <?php
 					if ($registerArr['type'] == "Reviewer") 
 					{
-						echo ' selected="selected"';
+						echo "selected='selected'";
 					}
 					?>>Reviewer</option>
 					<option value="ConferenceChair" <?php
 					if ($registerArr['type'] == "ConferenceChair") 
 					{
-						echo ' selected="selected"';
+						echo "selected='selected'";
 					}
 					?>>Conference Chair</option>
 				</select>
