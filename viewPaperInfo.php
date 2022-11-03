@@ -137,7 +137,6 @@ session_start();
                 echo "<p>No Paper(s) found!</p>";
             }
             ?>
-			
         </div>
     </body>
 </html>
