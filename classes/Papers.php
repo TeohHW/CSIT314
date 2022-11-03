@@ -789,5 +789,53 @@ class Papers {
             return FALSE;
         }
     }
+	function updatePaperReviewers($paperReviewer,$paperNo) 
+	{
+        $conn = new Database();
+        $conn = $conn->connectdb();
+
+        // Prepare Statements
+        $sql = "UPDATE {$this->table} SET paperReviewer = ? WHERE paperNo = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $paperReviewer,$paperNo);
+        $stmt->execute();
+
+        $result = $stmt->affected_rows;
+        // Close Connections
+        $stmt->close();
+        $conn->close();
+
+        if ($result != 0) 
+		{
+            return TRUE; 
+        } 
+		else {
+            return FALSE;
+        }
+    }
+		 function updateCompletedPaperReviewers($paperReviewer,$paperNo) 
+	{
+        $conn = new Database();
+        $conn = $conn->connectdb();
+
+        // Prepare Statements
+        $sql = "UPDATE {$this->table} SET completedReviewers = ? WHERE paperNo = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $paperReviewer,$paperNo);
+        $stmt->execute();
+
+        $result = $stmt->affected_rows;
+        // Close Connections
+        $stmt->close();
+        $conn->close();
+
+        if ($result != 0) 
+		{
+            return TRUE; 
+        } 
+		else {
+            return FALSE;
+        }
+    }
 }
 ?>
